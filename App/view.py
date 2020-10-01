@@ -38,7 +38,7 @@ operación seleccionada.
 # ___________________________________________________
 
 
-crimefile = 'crime-utf8.csv'
+accidentsfile = 'us_accidents_small.csv'
 
 # ___________________________________________________
 #  Menu principal
@@ -50,9 +50,9 @@ def printMenu():
     print("*******************************************")
     print("Bienvenido")
     print("1- Inicializar Analizador")
-    print("2- Cargar información de crimenes")
-    print("3- Consultar crimenes en un rango de fechas")
-    print("4- Consultar crimenes por codigo y fecha")
+    print("2- Cargar información de accidentes")
+    print("3- Consultar los accidentes en una fecha dada")
+    print("4- Consultar los accidentes por codigo y fecha")
     print("0- Salir")
     print("*******************************************")
 
@@ -70,30 +70,24 @@ while True:
         cont = controller.init()
 
     elif int(inputs[0]) == 2:
-        print("\nCargando información de crimenes ....")
-        controller.loadData(cont, crimefile)
-        print('Crimenes cargados: ' + str(controller.crimesSize(cont)))
+        print("\nCargando información de accidentes....")
+        controller.loadData(cont, accidentsfile)
+        print('\nAccidentes cargados: ' + str(controller.accidentsSize(cont)))
         print('Altura del arbol: ' + str(controller.indexHeight(cont)))
         print('Elementos en el arbol: ' + str(controller.indexSize(cont)))
         print('Menor Llave: ' + str(controller.minKey(cont)))
         print('Mayor Llave: ' + str(controller.maxKey(cont)))
 
     elif int(inputs[0]) == 3:
-        print("\nBuscando crimenes en un rango de fechas: ")
-        initialDate = input("Rango Inicial (YYYY-MM-DD): ")
-        finalDate = input("Rango Inicial (YYYY-MM-DD): ")
-        lst = controller.getCrimesByRange(cont, initialDate, finalDate)
-        print("\nTotal de llaves en el rango: " + str(lt.size(lst)))
-
-    elif int(inputs[0]) == 4:
-        print("\nBuscando crimenes x grupo de ofensa en una fecha: ")
-        initialDate = input("Fecha (YYYY-MM-DD): ")
-        offensecode = input("Codigo de ofensa: ")
-        numoffenses = controller.getCrimesByRangeCode(cont, initialDate,
-                                                      offensecode)
-        print("\nTotal de ofensas tipo: " + offensecode + " en esa fecha:  " +
-              str(numoffenses))
-
+        initialDate = input("\nIngrese la fecha (YYYY-MM-DD): ")
+        print("\nBuscando accidentes de " + initialDate + "....")
+        severity1 = int(controller.getAccidentsBySeverity(cont, initialDate, '1'))
+        severity2 = int(controller.getAccidentsBySeverity(cont, initialDate, '2'))
+        severity3 = int(controller.getAccidentsBySeverity(cont, initialDate, '3'))
+        severity4 = int(controller.getAccidentsBySeverity(cont, initialDate, '4'))
+        totalseverities = severity1+severity2+severity3+severity4
+        print("\nEn la fecha " + initialDate + " hubo " + str(totalseverities) + " accidentes. "
+        "Hubo " + str(severity1) + " de severidad 1, " + str(severity2) + " de severidad 2, " + str(severity3) + " de severidad 3, " + str(severity4) +" de severidad 4. ")
     else:
         sys.exit(0)
 sys.exit(0)
